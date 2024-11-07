@@ -1,2 +1,7 @@
-# squad04Psa
-Repositorio para el tp grupal Psa de Ingeniería de la Información
+# Sistema de carga de horas - Squad 4
+
+## Integrantes
+
+| Nombre | Padrón |
+| --- | --- |
+| Carlos Castillo | 108535 |
