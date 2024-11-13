@@ -1,7 +1,7 @@
 plugins {
     application
     id("org.springframework.boot") version "3.2.2"
-    id("io.spring.dependency-management") version "1.1.0"
+    id("io.spring.dependency-management") version "1.1.4"
     id("com.diffplug.spotless") version "6.25.0"
 }
 
@@ -11,13 +11,17 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
-
-    testImplementation(libs.junit)
-
-    testImplementation("io.cucumber:cucumber-java:7.20.1")
-    testImplementation("io.cucumber:cucumber-junit:7.20.1")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
     implementation(libs.guava)
+    implementation("org.postgresql:postgresql:42.7.1")
+
+    testImplementation(libs.junit)
+    testImplementation("io.cucumber:cucumber-java:7.20.1")
+    testImplementation("io.cucumber:cucumber-junit:7.20.1")
+    testImplementation("org.mockito:mockito-core:4.11.0")
+    testImplementation("org.mockito:mockito-inline:4.11.0")
 }
 
 java {
