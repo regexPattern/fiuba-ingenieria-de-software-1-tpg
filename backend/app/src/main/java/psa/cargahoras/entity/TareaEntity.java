@@ -5,6 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -13,6 +16,10 @@ public class TareaEntity {
   @Id
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
+
+  @ManyToOne
+  @JoinColumn(name = "id_proyecto", referencedColumnName = "id")
+  private ProyectoEntity proyecto;
 
   @Column(name = "nombre", nullable = false)
   private String nombre;
@@ -34,13 +41,22 @@ public class TareaEntity {
     TERMINADA
   }
 
-  public TareaEntity() {
+  public TareaEntity(String nombre, ProyectoEntity proyecto) {
     this.id = UUID.randomUUID();
+    if (proyecto == null) {
+      throw new NullPointerException("El proyecto pasado tiene que existir");
+    }
+    this.proyecto = proyecto;
+    this.nombre = nombre;
     this.estado = EstadoTarea.SIN_EMPEZAR;
   }
 
   public UUID getId() {
     return id;
+  }
+
+  public ProyectoEntity getProyecto() {
+    return proyecto;
   }
 
   public String getNombre() {
