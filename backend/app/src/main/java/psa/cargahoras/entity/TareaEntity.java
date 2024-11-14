@@ -4,11 +4,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity(name = "tbl_tareas")
 public class TareaEntity {
+  @Id
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
 
