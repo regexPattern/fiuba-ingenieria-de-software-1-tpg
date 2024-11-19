@@ -6,7 +6,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -15,10 +14,10 @@ import java.util.UUID;
 public class Tarea {
   @Id private UUID id;
 
-  @Column(nullable = false)
+  @Column(columnDefinition = "text", nullable = false)
   private String nombre;
 
-  @Column(nullable = false)
+  @Column(columnDefinition = "text", nullable = false)
   private String descripcion;
 
   @ManyToOne
@@ -27,6 +26,8 @@ public class Tarea {
 
   @OneToMany(mappedBy = "tarea")
   private List<CargaDeHoras> cargaDeHoras;
+
+  protected Tarea() {}
 
   public Tarea(UUID id, String nombre, String descripcion, Proyecto proyecto) {
     if (proyecto == null) {

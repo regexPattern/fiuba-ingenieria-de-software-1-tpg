@@ -9,10 +9,10 @@ import java.util.UUID;
 public class Rol {
   @Id private UUID id;
 
-  @Column(nullable = false, unique = true)
+  @Column(columnDefinition = "text", nullable = false)
   private String nombre;
 
-  @Column(nullable = false)
+  @Column(columnDefinition = "text", nullable = false)
   private String experiencia;
 
   @Column(nullable = false)

@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import psa.cargahoras.entity.CargaDeHoras;
 import psa.cargahoras.service.CargaHorasService;
+import psa.cargahoras.service.SincronizacionService;
 
 @SpringBootApplication
 @RestController
 @EntityScan("psa.cargahoras.entity")
 @EnableJpaRepositories("psa.cargahoras.repository")
 public class App {
+  @Autowired private SincronizacionService sincronizacionService;
   @Autowired private CargaHorasService cargaHorasService;
 
   @GetMapping("/carga-horas")
@@ -28,6 +30,16 @@ public class App {
     } catch (Exception e) {
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  @GetMapping("/sincronizar-apis")
+  public ResponseEntity<String> sincronizarAPIs() {
+    try {
+      sincronizacionService.sincronizarDatos();
+      return new ResponseEntity<>("Sincronización completada", HttpStatus.OK);
+      } catch (Exception e) {
+        return new ResponseEntity<>("Error en la sincronización: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      }
   }
 
   public static void main(String[] args) {

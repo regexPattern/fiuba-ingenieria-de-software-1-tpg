@@ -11,10 +11,10 @@ import java.util.UUID;
 public class Recurso {
   @Id private UUID id;
 
-  @Column(nullable = false)
+  @Column(columnDefinition = "text", nullable = false)
   private String nombre;
 
-  @Column(nullable = false)
+  @Column(columnDefinition = "text", nullable = false)
   private String apellido;
 
   @Column(nullable = false, unique = true, updatable = false)

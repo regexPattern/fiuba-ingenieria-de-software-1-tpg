@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -30,7 +29,8 @@ public class CargaDeHoras {
 
   protected CargaDeHoras() {}
 
-  public CargaDeHoras(UUID id, Tarea tarea, Recurso recurso, LocalDateTime fechaCarga, double cantidadHoras) {
+  public CargaDeHoras(
+      UUID id, Tarea tarea, Recurso recurso, LocalDateTime fechaCarga, double cantidadHoras) {
     this.id = id;
     this.tarea = tarea;
     this.recurso = recurso;

@@ -4,20 +4,18 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "tbl_proyectos")
 public class Proyecto {
-  @Id
-  private UUID id;
+  @Id private UUID id;
 
-  @Column(nullable = false)
+  @Column(columnDefinition = "text", nullable = false)
   private String nombre;
 
-  @Column(nullable = false)
+  @Column(columnDefinition = "text", nullable = false)
   private String descripcion;
 
   @OneToMany(mappedBy = "proyecto")
@@ -57,7 +55,7 @@ public class Proyecto {
   }
 
   public void addTareas(Tarea... tareas) {
-    for (Tarea t: tareas) {
+    for (Tarea t : tareas) {
       this.tareas.add(t);
     }
   }
