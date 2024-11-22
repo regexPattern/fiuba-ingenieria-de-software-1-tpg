@@ -2,7 +2,7 @@ package psa.cargahoras.service;
 
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import psa.cargahoras.dto.*;
@@ -20,11 +20,9 @@ public class ApiExternaService {
 
   private final RestTemplate clienteRest;
 
-  @Value("${api.base-url}")
-  private String baseUrl;
-
-  public ApiExternaService() {
-    this.clienteRest = new RestTemplate();
+  @Autowired
+  public ApiExternaService(RestTemplate clienteRest) {
+    this.clienteRest = clienteRest;
   }
 
   public List<RecursoDTO> getRecursos() {
