@@ -45,7 +45,7 @@ public class CargaDeHorasService {
         boolean existeTarea = apiExternaService
             .getTareas()
             .stream()
-            .anyMatch(t -> t.getId().equals(tareaId.toString()));
+            .anyMatch(t -> t.id.equals(tareaId.toString()));
 
         if (!existeTarea) {
             throw new IllegalArgumentException(
@@ -56,7 +56,7 @@ public class CargaDeHorasService {
         boolean existeRecurso = apiExternaService
             .getRecursos()
             .stream()
-            .anyMatch(r -> r.getId().equals(recursoId.toString()));
+            .anyMatch(r -> r.id.equals(recursoId.toString()));
 
         if (!existeRecurso) {
             throw new IllegalArgumentException(

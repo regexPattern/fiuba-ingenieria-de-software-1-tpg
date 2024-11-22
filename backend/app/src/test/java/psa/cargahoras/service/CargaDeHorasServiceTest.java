@@ -17,6 +17,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import psa.cargahoras.dto.RecursoDTO;
+import psa.cargahoras.dto.TareaDTO;
 import psa.cargahoras.entity.CargaDeHoras;
 import psa.cargahoras.repository.CargaDeHorasRepository;
 
@@ -26,11 +28,11 @@ public class CargaDeHorasServiceTest {
     @Mock
     private CargaDeHorasRepository cargaDeHorasRepository;
 
-    @InjectMocks
-    private CargaDeHorasService cargaDeHorasService;
+    @Mock
+    private ApiExternaService apiExternaService;
 
     @InjectMocks
-    private ApiExternaService apiExternaService;
+    private CargaDeHorasService cargaDeHorasService;
 
     @Test
     public void cargarHorasAUnaMismaTareaConUnMismoRecurso() {
@@ -39,6 +41,17 @@ public class CargaDeHorasServiceTest {
 
         double cantidadHoras = 8.0;
         String fechaCargaStr = "19/11/2024";
+
+        TareaDTO tarea = new TareaDTO();
+        tarea.id = tareaId.toString();
+
+        RecursoDTO recurso = new RecursoDTO();
+        recurso.id = recursoId.toString();
+
+        when(apiExternaService.getTareas()).thenReturn(Arrays.asList(tarea));
+        when(apiExternaService.getRecursos()).thenReturn(
+            Arrays.asList(recurso)
+        );
 
         cargaDeHorasService.cargarHoras(
             tareaId,
@@ -56,7 +69,6 @@ public class CargaDeHorasServiceTest {
         verify(cargaDeHorasRepository, times(2)).save(any(CargaDeHoras.class));
     }
 
-    @Test
     public void cargarHorasAUnaMismaTareaConDistintosRecursos() {
         UUID recurso1Id = UUID.randomUUID();
         UUID recurso2Id = UUID.randomUUID();
@@ -64,6 +76,20 @@ public class CargaDeHorasServiceTest {
 
         double cantidadHoras = 8.0;
         String fechaCargaStr = "19/11/2024";
+
+        TareaDTO tarea = new TareaDTO();
+        tarea.id = tareaId.toString();
+
+        RecursoDTO recurso1 = new RecursoDTO();
+        recurso1.id = recurso1Id.toString();
+
+        RecursoDTO recurso2 = new RecursoDTO();
+        recurso2.id = recurso2Id.toString();
+
+        when(apiExternaService.getTareas()).thenReturn(Arrays.asList(tarea));
+        when(apiExternaService.getRecursos()).thenReturn(
+            Arrays.asList(recurso1, recurso2)
+        );
 
         cargaDeHorasService.cargarHoras(
             tareaId,
@@ -84,12 +110,28 @@ public class CargaDeHorasServiceTest {
 
     @Test
     public void cargarHorasADistintasTareasConUnMismoRecurso() {
-        UUID recursoId = UUID.randomUUID();
-        UUID tarea1Id = UUID.randomUUID();
-        UUID tarea2Id = UUID.randomUUID();
-
         double cantidadHoras = 8.0;
         String fechaCargaStr = "19/11/2024";
+
+        UUID tarea1Id = UUID.randomUUID();
+        UUID tarea2Id = UUID.randomUUID();
+        UUID recursoId = UUID.randomUUID();
+
+        TareaDTO tarea1 = new TareaDTO();
+        tarea1.id = tarea1Id.toString();
+
+        TareaDTO tarea2 = new TareaDTO();
+        tarea2.id = tarea2Id.toString();
+
+        RecursoDTO recurso = new RecursoDTO();
+        recurso.id = recursoId.toString();
+
+        when(apiExternaService.getTareas()).thenReturn(
+            Arrays.asList(tarea1, tarea2)
+        );
+        when(apiExternaService.getRecursos()).thenReturn(
+            Arrays.asList(recurso)
+        );
 
         cargaDeHorasService.cargarHoras(
             tarea1Id,
@@ -108,13 +150,23 @@ public class CargaDeHorasServiceTest {
         verify(cargaDeHorasRepository, times(2)).save(any(CargaDeHoras.class));
     }
 
-    @Test
     public void obtenerTodasLasCargasDeHoras() {
         double cantidadHoras = 8.0;
         String fechaCargaStr = "19/11/2024";
 
         UUID recursoId = UUID.randomUUID();
         UUID tareaId = UUID.randomUUID();
+
+        TareaDTO tarea = new TareaDTO();
+        tarea.id = tareaId.toString();
+
+        RecursoDTO recurso = new RecursoDTO();
+        recurso.id = recursoId.toString();
+
+        when(apiExternaService.getTareas()).thenReturn(Arrays.asList(tarea));
+        when(apiExternaService.getRecursos()).thenReturn(
+            Arrays.asList(recurso)
+        );
 
         CargaDeHoras carga1 = cargaDeHorasService.cargarHoras(
             tareaId,
@@ -143,6 +195,9 @@ public class CargaDeHorasServiceTest {
         UUID tareaId = UUID.randomUUID();
         UUID recursoId = UUID.randomUUID();
 
+        RecursoDTO recurso = new RecursoDTO();
+        recurso.id = recursoId.toString();
+
         when(apiExternaService.getTareas()).thenReturn(Arrays.asList());
 
         Exception e = assertThrows(IllegalArgumentException.class, () ->
@@ -164,8 +219,11 @@ public class CargaDeHorasServiceTest {
         UUID recursoId = UUID.randomUUID();
         UUID tareaId = UUID.randomUUID();
 
+        TareaDTO tarea = new TareaDTO();
+        tarea.id = tareaId.toString();
+
         when(apiExternaService.getRecursos()).thenReturn(Arrays.asList());
-        when(apiExternaService.getTareas()).thenReturn(Arrays.asList());
+        when(apiExternaService.getTareas()).thenReturn(Arrays.asList(tarea));
 
         Exception e = assertThrows(IllegalArgumentException.class, () ->
             cargaDeHorasService.cargarHoras(

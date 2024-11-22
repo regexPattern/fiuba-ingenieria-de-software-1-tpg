@@ -9,8 +9,6 @@ import io.cucumber.java.es.Cuando;
 import io.cucumber.java.es.Dado;
 import io.cucumber.java.es.Entonces;
 import io.cucumber.java.es.Y;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
