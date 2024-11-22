@@ -17,16 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import psa.cargahoras.entity.CargaDeHoras;
 import psa.cargahoras.service.CargaDeHorasService;
-import psa.cargahoras.service.SincronizacionService;
 
 @SpringBootApplication
 @RestController
 @EntityScan("psa.cargahoras.entity")
 @EnableJpaRepositories("psa.cargahoras.repository")
 public class App {
-
-    @Autowired
-    private SincronizacionService sincronizacionService;
 
     @Autowired
     private CargaDeHorasService cargaHorasService;
@@ -56,19 +52,19 @@ public class App {
                 request.get("cantidadHoras").toString()
             );
 
-            CargaDeHoras nuevaCarga = cargaHorasService.registrarNuevaCarga(
+            CargaDeHoras nuevaCarga = cargaHorasService.cargarHoras(
                 idTarea,
                 idRecurso,
-                fechaCarga,
-                cantidadHoras
+                cantidadHoras,
+                fechaCarga
             );
 
             Map<String, Object> response = new HashMap<>();
             response.put("id", nuevaCarga.getId());
             response.put("fechaCarga", nuevaCarga.getFechaCarga());
             response.put("cantidadHoras", nuevaCarga.getCantidadHoras());
-            response.put("idTarea", nuevaCarga.getTarea().getId());
-            response.put("idRecurso", nuevaCarga.getRecurso().getId());
+            response.put("idTarea", nuevaCarga.getTareaId());
+            response.put("idRecurso", nuevaCarga.getRecursoId());
 
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
@@ -81,27 +77,7 @@ public class App {
         }
     }
 
-    @GetMapping("/sincronizar-apis")
-    public ResponseEntity<String> sincronizarAPIs() {
-        try {
-            sincronizacionService.sincronizarDatos();
-            return new ResponseEntity<>(
-                "Sincronización completada",
-                HttpStatus.OK
-            );
-        } catch (Exception e) {
-            return new ResponseEntity<>(
-                "Error en la sincronización: " + e.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR
-            );
-        }
-    }
-
     public static void main(String[] args) {
-        System.out.println("DATABASE_HOST: " + System.getenv("DATABASE_HOST"));
-        System.out.println("DATABASE_PORT: " + System.getenv("DATABASE_PORT"));
-        System.out.println("DATABASE_DB: " + System.getenv("DATABASE_DB"));
-
         SpringApplication.run(App.class, args);
     }
 }

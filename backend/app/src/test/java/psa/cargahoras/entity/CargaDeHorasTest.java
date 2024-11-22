@@ -1,103 +1,113 @@
 package psa.cargahoras.entity;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 
+import java.util.UUID;
 import org.junit.Test;
 
 public class CargaDeHorasTest {
-  @Test
-  public void constructorAsignaCamposCorrectamente() {
-    Tarea tarea = mock(Tarea.class);
-    Recurso recurso = mock(Recurso.class);
-    String fechaCargaStr = "19/11/2024";
-    double cantidadHoras = 8.0;
 
-    CargaDeHoras cargaDeHoras = new CargaDeHoras(tarea, recurso, fechaCargaStr, cantidadHoras);
+    @Test
+    public void constructorAsignaCamposCorrectamente() {
+        UUID tareaId = UUID.randomUUID();
+        UUID recursoId = UUID.randomUUID();
+        double cantidadHoras = 8.0;
+        String fechaCargaStr = "19/11/2024";
 
-    assertEquals(tarea, cargaDeHoras.getTarea());
-    assertEquals(recurso, cargaDeHoras.getRecurso());
-    assertEquals(fechaCargaStr, cargaDeHoras.getFechaCarga().format(CargaDeHoras.formatterFecha));
-    assertEquals(cantidadHoras, cargaDeHoras.getCantidadHoras(), 0.0);
-  }
+        CargaDeHoras cargaDeHoras = new CargaDeHoras(
+            tareaId,
+            recursoId,
+            cantidadHoras,
+            fechaCargaStr
+        );
 
-  @Test
-  public void crearUnaCargaDeHorasConHorasNegativasTiraExcepcion() {
-    Tarea tarea = mock(Tarea.class);
-    Recurso recurso = mock(Recurso.class);
-    String fechaCargaStr = "19/11/2024";
+        assertEquals(tareaId, cargaDeHoras.getTareaId());
+        assertEquals(recursoId, cargaDeHoras.getRecursoId());
+        assertEquals(
+            fechaCargaStr,
+            cargaDeHoras.getFechaCarga().format(CargaDeHoras.formatterFecha)
+        );
+        assertEquals(cantidadHoras, cargaDeHoras.getCantidadHoras(), 0.0);
+    }
 
-    double cantidadHoras = -8.0;
+    @Test
+    public void crearUnaCargaDeHorasConHorasNegativasTiraExcepcion() {
+        UUID tareaId = UUID.randomUUID();
+        UUID recursoId = UUID.randomUUID();
+        String fechaCargaStr = "19/11/2024";
 
-    Exception e =
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> new CargaDeHoras(tarea, recurso, fechaCargaStr, cantidadHoras));
+        double cantidadHoras = -8.0;
 
-    assertEquals("La cantidad de horas no puede ser negativa", e.getMessage());
-  }
+        Exception e = assertThrows(IllegalArgumentException.class, () ->
+            new CargaDeHoras(tareaId, recursoId, cantidadHoras, fechaCargaStr)
+        );
 
-  @Test
-  public void crearUnaCargaDeHorasConTareaNulaTiraExcepcion() {
-    Recurso recurso = mock(Recurso.class);
-    String fechaCargaStr = "19/11/2024";
-    double cantidadHoras = 8.0;
+        assertEquals(
+            "La cantidad de horas no puede ser negativa",
+            e.getMessage()
+        );
+    }
 
-    Tarea tarea = null;
+    @Test
+    public void crearUnaCargaDeHorasConTareaNulaTiraExcepcion() {
+        UUID recursoId = UUID.randomUUID();
+        String fechaCargaStr = "19/11/2024";
+        double cantidadHoras = 8.0;
 
-    Exception e =
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> new CargaDeHoras(tarea, recurso, fechaCargaStr, cantidadHoras));
+        UUID tareaId = null;
 
-    assertEquals("La tarea no puede ser nula", e.getMessage());
-  }
+        Exception e = assertThrows(IllegalArgumentException.class, () ->
+            new CargaDeHoras(tareaId, recursoId, cantidadHoras, fechaCargaStr)
+        );
 
-  @Test
-  public void crearUnaCargaDeHorasConRecursoNuloTiraExcepcion() {
-    Tarea tarea = mock(Tarea.class);
-    String fechaCargaStr = "19/11/2024";
-    double cantidadHoras = 8.0;
+        assertEquals("El id de la tarea no puede ser nulo", e.getMessage());
+    }
 
-    Recurso recurso = null;
+    @Test
+    public void crearUnaCargaDeHorasConRecursoNuloTiraExcepcion() {
+        UUID tareaId = UUID.randomUUID();
+        String fechaCargaStr = "19/11/2024";
+        double cantidadHoras = 8.0;
 
-    Exception e =
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> new CargaDeHoras(tarea, recurso, fechaCargaStr, cantidadHoras));
+        UUID recursoId = null;
 
-    assertEquals("El recurso no puede ser nulo", e.getMessage());
-  }
+        Exception e = assertThrows(IllegalArgumentException.class, () ->
+            new CargaDeHoras(tareaId, recursoId, cantidadHoras, fechaCargaStr)
+        );
 
-  @Test
-  public void crearUnaCargaDeHorasConFechaNulaTiraExcepcion() {
-    Tarea tarea = mock(Tarea.class);
-    Recurso recurso = mock(Recurso.class);
-    double cantidadHoras = 8.0;
+        assertEquals("El id del recurso no puede ser nulo", e.getMessage());
+    }
 
-    String fechaCargaStr = null;
+    @Test
+    public void crearUnaCargaDeHorasConFechaNulaTiraExcepcion() {
+        UUID tareaId = UUID.randomUUID();
+        UUID recursoId = UUID.randomUUID();
+        double cantidadHoras = 8.0;
 
-    Exception e =
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> new CargaDeHoras(tarea, recurso, fechaCargaStr, cantidadHoras));
+        String fechaCargaStr = null;
 
-    assertEquals("La fecha de carga no puede ser nula", e.getMessage());
-  }
+        Exception e = assertThrows(IllegalArgumentException.class, () ->
+            new CargaDeHoras(tareaId, recursoId, cantidadHoras, fechaCargaStr)
+        );
 
-  @Test
-  public void crearUnaCargaDeHorasConFechaEnFormatoIncorrectoTiraExcepcion() {
-    Tarea tarea = mock(Tarea.class);
-    Recurso recurso = mock(Recurso.class);
-    double cantidadHoras = 8.0;
+        assertEquals("La fecha de carga no puede ser nula", e.getMessage());
+    }
 
-    String fechaCargaStr = "2024/31/12";
+    @Test
+    public void crearUnaCargaDeHorasConFechaEnFormatoIncorrectoTiraExcepcion() {
+        UUID tareaId = UUID.randomUUID();
+        UUID recursoId = UUID.randomUUID();
+        double cantidadHoras = 8.0;
 
-    Exception e =
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> new CargaDeHoras(tarea, recurso, fechaCargaStr, cantidadHoras));
+        String fechaCargaStr = "2024/31/12";
 
-    assertEquals("El formato de la fecha debe ser dd/MM/yyyy", e.getMessage());
-  }
+        Exception e = assertThrows(IllegalArgumentException.class, () ->
+            new CargaDeHoras(tareaId, recursoId, cantidadHoras, fechaCargaStr)
+        );
+
+        assertEquals(
+            "El formato de la fecha debe ser dd/MM/yyyy",
+            e.getMessage()
+        );
+    }
 }
