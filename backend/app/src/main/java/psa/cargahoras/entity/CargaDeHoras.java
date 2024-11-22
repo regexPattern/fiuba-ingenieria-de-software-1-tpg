@@ -5,46 +5,42 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "tbl_carga_de_horas")
 public class CargaDeHoras {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @ManyToOne
-  @JoinColumn(name = "tareaId", nullable = false)
-  private Tarea tarea;
-
-  @ManyToOne
-  @JoinColumn(name = "recursoId", nullable = false)
-  private Recurso recurso;
+  @Column(nullable = false)
+  private UUID tareaId;
 
   @Column(nullable = false)
-  private LocalDate fechaCarga;
+  private UUID recursoId;
 
   @Column(nullable = false)
   private double cantidadHoras;
+
+  @Column(nullable = false)
+  private LocalDate fechaCarga;
 
   public static DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
   protected CargaDeHoras() {}
 
-  public CargaDeHoras(Tarea tarea, Recurso recurso, String fechaCargaStr, double cantidadHoras) {
+  public CargaDeHoras(UUID tareaId, UUID recursoId, double cantidadHoras, String fechaCargaStr) {
     if (cantidadHoras < 0) {
       throw new IllegalArgumentException("La cantidad de horas no puede ser negativa");
     }
-    if (tarea == null) {
-      throw new IllegalArgumentException("La tarea no puede ser nula");
+    if (tareaId == null) {
+      throw new IllegalArgumentException("El id de la tarea no puede ser nulo");
     }
-    if (recurso == null) {
-      throw new IllegalArgumentException("El recurso no puede ser nulo");
+    if (recursoId == null) {
+      throw new IllegalArgumentException("El id del recurso no puede ser nulo");
     }
     if (fechaCargaStr == null) {
       throw new IllegalArgumentException("La fecha de carga no puede ser nula");
@@ -56,8 +52,8 @@ public class CargaDeHoras {
       throw new IllegalArgumentException("El formato de la fecha debe ser dd/MM/yyyy", e);
     }
 
-    this.tarea = tarea;
-    this.recurso = recurso;
+    this.tareaId = tareaId;
+    this.recursoId = recursoId;
     this.cantidadHoras = cantidadHoras;
   }
 
@@ -65,35 +61,19 @@ public class CargaDeHoras {
     return id;
   }
 
-  public Tarea getTarea() {
-    return tarea;
+  public UUID getTareaId() {
+    return tareaId;
   }
 
-  public Recurso getRecurso() {
-    return recurso;
-  }
-
-  public LocalDate getFechaCarga() {
-    return fechaCarga;
+  public UUID getRecursoId() {
+    return recursoId;
   }
 
   public double getCantidadHoras() {
     return cantidadHoras;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    CargaDeHoras that = (CargaDeHoras) o;
-    return Double.compare(that.cantidadHoras, cantidadHoras) == 0
-        && Objects.equals(tarea, that.tarea)
-        && Objects.equals(recurso, that.recurso)
-        && Objects.equals(fechaCarga, that.fechaCarga);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(tarea, recurso, fechaCarga, cantidadHoras);
+  public LocalDate getFechaCarga() {
+    return fechaCarga;
   }
 }
