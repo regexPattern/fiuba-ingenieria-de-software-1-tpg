@@ -1,7 +1,7 @@
 "use client";
 
 import { RecursoContext } from "@/_context/recursoContext";
-import { Select } from "flowbite-react";
+import { Label, Select } from "flowbite-react";
 import { useContext } from "react";
 
 export default function SelectRecurso() {
@@ -28,12 +28,20 @@ export default function SelectRecurso() {
   }
 
   return (
-    <Select value={recursoActual.id} onChange={handleChange}>
-      {recursos.map((r) => (
-        <option key={r.id} value={r.id}>
-          {r.dni} - {r.nombre} {r.apellido}
-        </option>
-      ))}
-    </Select>
+    <div className="space-y-2">
+      <Label htmlFor="recursoId" value="Seleccione un recurso" />
+      <Select
+        id="recursoId"
+        name="recursoId"
+        value={recursoActual.id}
+        onChange={handleChange}
+      >
+        {recursos.map((r) => (
+          <option key={r.id} value={r.id}>
+            {r.dni} - {r.nombre} {r.apellido}
+          </option>
+        ))}
+      </Select>
+    </div>
   );
 }

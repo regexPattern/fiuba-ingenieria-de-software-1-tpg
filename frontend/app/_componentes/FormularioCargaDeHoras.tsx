@@ -1,13 +1,21 @@
 "use client";
 
 import { RecursoContext } from "@/_context/recursoContext";
+import { cargarHoras } from "@/_lib/actions";
 import { Proyecto, Tarea } from "@/_lib/tipos";
-import { cargarHoras } from "@/cargar-horas/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Datepicker, Label, Select, TextInput } from "flowbite-react";
-import React, { useContext, useEffect, useMemo } from "react";
+import {
+  Button,
+  Datepicker,
+  Label,
+  Modal,
+  Select,
+  TextInput
+} from "flowbite-react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Control, Controller, FieldErrors, useForm } from "react-hook-form";
 import { z } from "zod";
+import ResumenCargaDeHoras from "./ResumenCargaDeHoras";
 
 const schema = z.object({
   proyectoId: z.string(),
@@ -25,7 +33,7 @@ const schema = z.object({
   fechaCarga: z.date()
 });
 
-type FormValues = z.infer<typeof schema>;
+type ValoresFormulario = z.infer<typeof schema>;
 
 export default function FormularioCargaDeHoras({
   proyectos,
@@ -51,23 +59,25 @@ export default function FormularioCargaDeHoras({
   const proyectoInicial = proyectosConTareas[0];
 
   const {
-    control,
-    handleSubmit,
-    watch,
-    setError,
     clearErrors,
-    formState: { errors }
-  } = useForm<FormValues>({
+    control,
+    formState: { errors },
+    getValues,
+    handleSubmit,
+    setError,
+    watch
+  } = useForm<ValoresFormulario>({
     resolver: zodResolver(schema),
     defaultValues: {
       proyectoId: proyectoInicial.id,
       tareaId: tareas.find((t) => t.proyectoId === proyectoInicial.id)!.id,
-      cantidadHoras: 0,
+      cantidadHoras: undefined,
       fechaCarga: new Date()
     }
   });
 
   const proyectoId = watch("proyectoId");
+
   const tareasDelProyecto = useMemo(
     () => tareas.filter((t) => t.proyectoId === proyectoId),
     [tareas, proyectoId]
@@ -88,7 +98,14 @@ export default function FormularioCargaDeHoras({
     }
   }, [proyectoId, proyectoTieneTareas, setError, clearErrors]);
 
-  const onSubmit = async (data: FormValues) => {
+  function handleAbrirModal() {
+    handleSubmit(() => {
+      setModalAbierto(true);
+    })();
+  }
+
+  async function handleEnviarFormulario() {
+    const data = getValues();
     const formData = new FormData();
 
     formData.append("tareaId", data.tareaId);
@@ -104,13 +121,13 @@ export default function FormularioCargaDeHoras({
     );
 
     await cargarHoras(formData);
-  };
+    setModalAbierto(false);
+  }
+
+  const [modalAbierto, setModalAbierto] = useState(false);
 
   return (
-    <form
-      className="flex flex-col justify-between"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
       <div className="grid gap-4 grid-cols-4">
         <InputFormulario
           nombreInput="proyectoId"
@@ -175,11 +192,30 @@ export default function FormularioCargaDeHoras({
           <TextInput type="number" />
         </InputFormulario>
       </div>
+
       <div className="flex justify-end">
-        <Button type="submit" disabled={!proyectoTieneTareas}>
-          Cargar Horas
+        <Button onClick={handleAbrirModal} disabled={!proyectoTieneTareas}>
+          Cargar horas
         </Button>
       </div>
+
+      <Modal show={modalAbierto} onClose={() => setModalAbierto(false)}>
+        <Modal.Header>Confirmar carga de horas</Modal.Header>
+        <Modal.Body>
+          <ResumenCargaDeHoras
+            proyecto={proyectos.find((p) => p.id === getValues().proyectoId)!}
+            tarea={tareas.find((t) => t.id === getValues().tareaId)!}
+            cantidadHoras={getValues().cantidadHoras}
+            fechaCarga={getValues().fechaCarga}
+          />
+        </Modal.Body>
+        <Modal.Footer className="justify-end">
+          <Button onClick={handleEnviarFormulario}>Confirmar</Button>
+          <Button color="gray" onClick={() => setModalAbierto(false)}>
+            Cancelar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </form>
   );
 }
@@ -193,12 +229,12 @@ function InputFormulario({
   errors,
   children
 }: {
-  nombreInput: keyof FormValues;
+  nombreInput: keyof ValoresFormulario;
   labelInput: string;
   className: string;
-  control: Control<FormValues>;
+  control: Control<ValoresFormulario>;
   proyectoTieneTareas: boolean;
-  errors: FieldErrors<FormValues>;
+  errors: FieldErrors<ValoresFormulario>;
   children: React.ReactElement;
 }) {
   return (
@@ -219,7 +255,11 @@ function InputFormulario({
               <span className="font-medium">{errors[nombreInput].message}</span>
             ),
             value:
-              nombreInput === "cantidadHoras" ? field.value || "" : field.value,
+              nombreInput === "cantidadHoras"
+                ? field.value === undefined
+                  ? ""
+                  : field.value
+                : field.value,
             onChange:
               nombreInput === "cantidadHoras"
                 ? (e: React.ChangeEvent<HTMLInputElement>) => {
