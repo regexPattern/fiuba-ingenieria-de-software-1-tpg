@@ -1,8 +1,9 @@
-import Image from "next/image";
+import SelectRecurso from "@/_componentes/SelectRecurso";
+import { Recurso } from "@/_lib/tipos";
 
-export default async function Home() {
-  const data = await fetch(`${process.env.BACKEND_URL}/carga-horas`);
-  const cargasHoras = await data.json();
+export default async function () {
+  const res = await fetch(`${process.env.BACKEND_URL}/recursos`);
+  const recursos: Recurso[] = await res.json();
 
-  return <div>Hello World</div>;
+  return <SelectRecurso recursos={recursos} />;
 }
