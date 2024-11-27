@@ -6,12 +6,10 @@ import static org.mockito.Mockito.*;
 import io.cucumber.java.Before;
 import io.cucumber.java.es.Cuando;
 import io.cucumber.java.es.Y;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import psa.cargahoras.dto.CargaDeHorasPorRecursoDTO;
@@ -53,7 +51,8 @@ public class ConsultaCargasDeHorasPorRecursoSteps {
         new CargaDeHorasService(cargaDeHorasRepository, testContext.getApiExternaService());
   }
 
-  @Y("una carga de horas con id {string}, con tarea con id {string}, cargada por el recurso con id {string}")
+  @Y(
+      "una carga de horas con id {string}, con tarea con id {string}, cargada por el recurso con id {string}")
   public void dadaUnaCargaDeHorasConTarea(String cargaDeHorasId, String tareaId, String recursoId) {
     TareaDTO tarea = mock(TareaDTO.class);
 
@@ -78,7 +77,7 @@ public class ConsultaCargasDeHorasPorRecursoSteps {
         resultadoOperacionCommonSteps.ejecutar(
             () ->
                 cargaDeHorasService.obtenerCargasDeHorasPorRecurso(
-                    recursoCommonSteps.getRecurso().getId()));
+                    recursoCommonSteps.getRecurso().getId(), LocalDate.now()));
   }
 
   @Y("la cantidad de cargas de horas del recurso debe ser {int}")
