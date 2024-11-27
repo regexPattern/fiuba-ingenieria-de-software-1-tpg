@@ -15,8 +15,9 @@ import io.cucumber.java.Before;
 import io.cucumber.java.es.Cuando;
 // import io.cucumber.java.es.Dado;
 import io.cucumber.java.es.Y;
-import psa.cargahoras.dto.RecursoDTO;
-import psa.cargahoras.dto.RolDTO;
+import psa.cargahoras.dto.CostoRecursoDTO;
+// import psa.cargahoras.dto.RecursoDTO;
+// import psa.cargahoras.dto.RolDTO;
 import psa.cargahoras.dto.TareaDTO;
 import psa.cargahoras.entity.CargaDeHoras;
 import psa.cargahoras.repository.CargaDeHorasRepository;
@@ -27,7 +28,7 @@ import psa.cargahoras.service.RecursoService;
 public class ConsultaDeCostoRecursoSteps {
         
   private final RecursoCommonSteps recursoCommonSteps;
-  private final ROLCommonSteps rolCommonSteps;
+  // private final ROLCommonSteps rolCommonSteps;
   private final ResultadoOperacionCommonSteps resultadoOperacionCommonSteps;
   private final TestContext testContext;
 
@@ -38,14 +39,14 @@ public class ConsultaDeCostoRecursoSteps {
   @Mock private CargaDeHorasService cargaDeHorasService;
 
   private List<CargaDeHoras> cargasDeHoras;
-  private int costoRecurso;
+  private CostoRecursoDTO costoRecurso;
 
   public ConsultaDeCostoRecursoSteps(ResultadoOperacionCommonSteps resultadoOperacionCommonSteps, 
                                      RecursoCommonSteps recursoCommonSteps,
-                                     ROLCommonSteps rolCommonSteps,
+                                     /*ROLCommonSteps rolCommonSteps,*/
                                      TestContext testContext) {
     this.recursoCommonSteps = recursoCommonSteps;
-    this.rolCommonSteps = rolCommonSteps;
+    // this.rolCommonSteps = rolCommonSteps;
     this.resultadoOperacionCommonSteps = resultadoOperacionCommonSteps;
     this.testContext = testContext;
   }
@@ -90,6 +91,6 @@ public class ConsultaDeCostoRecursoSteps {
 
   @Y("el costo del recurso debe ser {int}")
   public void verificarCostoRecurso(int costoEsperado) {
-    assertEquals(costoEsperado, costoRecurso);
+    assertEquals(costoEsperado, costoRecurso.getCosto());
   }
 }

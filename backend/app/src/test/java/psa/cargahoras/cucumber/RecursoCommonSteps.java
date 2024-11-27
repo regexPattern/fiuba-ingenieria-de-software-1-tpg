@@ -8,13 +8,13 @@ import psa.cargahoras.dto.RecursoDTO;
 
 public class RecursoCommonSteps {
   private final TestContext testContext;
-  private final ROLCommonSteps rolCommonSteps;
+  // private final ROLCommonSteps rolCommonSteps;
 
   private RecursoDTO recurso;
 
-  public RecursoCommonSteps(TestContext testContext, 
-                            ROLCommonSteps rolCommonSteps) {
-    this.rolCommonSteps = rolCommonSteps;
+  public RecursoCommonSteps(TestContext testContext 
+                            /*ROLCommonSteps rolCommonSteps*/) {
+    // this.rolCommonSteps = rolCommonSteps;
     this.testContext = testContext;
   }
 

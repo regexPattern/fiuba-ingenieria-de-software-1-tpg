@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import psa.cargahoras.dto.CargaDeHorasPorRecursoDTO;
+import psa.cargahoras.dto.CostoRecursoDTO;
 import psa.cargahoras.dto.RecursoDTO;
 import psa.cargahoras.dto.RolDTO;
 
@@ -19,18 +20,22 @@ public class RecursoService {
     this.cargaDeHorasService = cargaDeHorasService;
   }
 
-  public List<Integer> obtenerCostosDeTodosLosRecursos() {
-    return apiExternaService.getRoles().stream().
-        map(rol -> rol.getCosto()).
-        toList();
+  public List<CostoRecursoDTO> obtenerCostosDeTodosLosRecursos() {
+    List<RecursoDTO> recursos = apiExternaService.getRecursos();
+    
+    return recursos.stream()
+        .map(
+          recurso -> obtenerCostoPorRecurso(recurso.getId())
+        )
+        .toList();
   }
 
-  public Integer obtenerCostoPorRecurso(String recursoId) {
+  public CostoRecursoDTO obtenerCostoPorRecurso(String recursoId) {
     boolean existeRecurso = apiExternaService.getRecursos().stream()
         .anyMatch(recurso -> recurso.getId().equals(recursoId));
 
     if (!existeRecurso) {
-      throw new IllegalArgumentException("No existe el recurso con el ID: " + recursoId);
+      throw new IllegalArgumentException("No existe el recurso con ID: " + recursoId);
     }
 
     RecursoDTO recursoBuscado = apiExternaService.getRecursos().stream()
@@ -44,12 +49,16 @@ public class RecursoService {
     List<CargaDeHorasPorRecursoDTO> cargasDeHoras = cargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId);
 
     List<Double> horasCargadas = cargasDeHoras.stream().map(carga -> carga.getCantidadHoras()).toList();
+    
     Double costoRecurso = horasCargadas.stream()
                             .mapToDouble(hora -> rolRecurso.getCosto() * hora).sum();
 
-    // System.out.println("Costo por hora: " + rolRecurso.getCosto() + ", horas cargadas: " + horasCargadas.get(0) + ". Costo total del recurso:" + rolRecurso.getCosto()*horasCargadas.get(0));
-    
-  return costoRecurso.intValue();
+    return new CostoRecursoDTO(
+        recursoId, 
+        rolRecurso.getId(), 
+        costoRecurso.intValue(),
+        String.join(" ", recursoBuscado.getNombre(), recursoBuscado.getApellido()), 
+        String.join(" ", rolRecurso.getNombre(), rolRecurso.getExperiencia()));
   }
         
 }
