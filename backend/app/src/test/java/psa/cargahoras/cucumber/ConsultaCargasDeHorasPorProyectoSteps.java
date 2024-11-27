@@ -17,8 +17,8 @@ import psa.cargahoras.service.CargaDeHorasService;
 public class ConsultaCargasDeHorasPorProyectoSteps {
 
   private final TestContext testContext;
-  private final ProyectoCommonSteps proyectoCommonSteps;
   private final TareaCommonSteps tareaCommonSteps;
+  private final ProyectoCommonSteps proyectoCommonSteps;
   private final ResultadoOperacionCommonSteps resultadoOperacionCommonSteps;
 
   @Mock private CargaDeHorasRepository cargaDeHorasRepository;
@@ -30,8 +30,8 @@ public class ConsultaCargasDeHorasPorProyectoSteps {
 
   public ConsultaCargasDeHorasPorProyectoSteps(
       TestContext testContext,
-      ProyectoCommonSteps proyectoCommonSteps,
       TareaCommonSteps tareaCommonSteps,
+      ProyectoCommonSteps proyectoCommonSteps,
       ResultadoOperacionCommonSteps resultadoOperacionCommonSteps) {
     this.testContext = testContext;
     this.proyectoCommonSteps = proyectoCommonSteps;
