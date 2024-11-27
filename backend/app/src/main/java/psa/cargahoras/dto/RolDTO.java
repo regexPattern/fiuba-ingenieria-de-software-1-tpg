@@ -5,9 +5,9 @@ public class RolDTO {
   private String id;
   private String nombre;
   private String experiencia;
-  private Integer costo;
+  private double costo;
 
-  private Integer definirCosto() {
+  private double definirCosto() {
     return switch (String.join(" ", nombre, experiencia)) {
       case "Desarrollador Senior" -> 30;
       case "Desarrollador Semi-Senior" -> 25;
@@ -18,8 +18,7 @@ public class RolDTO {
     };
   }
 
-  public RolDTO() {
-  }
+  public RolDTO() {}
 
   public String getId() {
     return id;
@@ -45,7 +44,7 @@ public class RolDTO {
     this.experiencia = experiencia;
   }
 
-  public Integer getCosto() {
+  public double getCosto() {
     return definirCosto();
   }
 

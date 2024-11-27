@@ -3,21 +3,16 @@ package psa.cargahoras.cucumber;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
+import io.cucumber.java.Before;
+import io.cucumber.java.es.Cuando;
+import io.cucumber.java.es.Y;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import io.cucumber.java.Before;
-import io.cucumber.java.es.Cuando;
-// import io.cucumber.java.es.Dado;
-import io.cucumber.java.es.Y;
 import psa.cargahoras.dto.CostoRecursoDTO;
-// import psa.cargahoras.dto.RecursoDTO;
-// import psa.cargahoras.dto.RolDTO;
 import psa.cargahoras.dto.TareaDTO;
 import psa.cargahoras.entity.CargaDeHoras;
 import psa.cargahoras.repository.CargaDeHorasRepository;
@@ -26,7 +21,7 @@ import psa.cargahoras.service.CargaDeHorasService;
 import psa.cargahoras.service.RecursoService;
 
 public class ConsultaDeCostoRecursoSteps {
-        
+
   private final RecursoCommonSteps recursoCommonSteps;
   // private final ROLCommonSteps rolCommonSteps;
   private final ResultadoOperacionCommonSteps resultadoOperacionCommonSteps;
@@ -35,16 +30,19 @@ public class ConsultaDeCostoRecursoSteps {
   private RecursoService recursoService;
 
   @Mock private ApiExternaService apiExternaService;
+
   @Mock private CargaDeHorasRepository cargaDeHorasRepository;
+
   @Mock private CargaDeHorasService cargaDeHorasService;
 
   private List<CargaDeHoras> cargasDeHoras;
   private CostoRecursoDTO costoRecurso;
 
-  public ConsultaDeCostoRecursoSteps(ResultadoOperacionCommonSteps resultadoOperacionCommonSteps, 
-                                     RecursoCommonSteps recursoCommonSteps,
-                                     /*ROLCommonSteps rolCommonSteps,*/
-                                     TestContext testContext) {
+  public ConsultaDeCostoRecursoSteps(
+      ResultadoOperacionCommonSteps resultadoOperacionCommonSteps,
+      RecursoCommonSteps recursoCommonSteps,
+      /*ROLCommonSteps rolCommonSteps,*/
+      TestContext testContext) {
     this.recursoCommonSteps = recursoCommonSteps;
     // this.rolCommonSteps = rolCommonSteps;
     this.resultadoOperacionCommonSteps = resultadoOperacionCommonSteps;
@@ -54,14 +52,17 @@ public class ConsultaDeCostoRecursoSteps {
   @Before
   public void resetear() {
     MockitoAnnotations.openMocks(this);
-   
+
     cargasDeHoras = new ArrayList<>();
-    cargaDeHorasService = new CargaDeHorasService(cargaDeHorasRepository, testContext.getApiExternaService());
+    cargaDeHorasService =
+        new CargaDeHorasService(cargaDeHorasRepository, testContext.getApiExternaService());
     recursoService = new RecursoService(testContext.getApiExternaService(), cargaDeHorasService);
   }
 
-  @Y("una carga de horas con id {string}, con tarea con id {string}, cargada por el recurso con id {string} con {double} horas cargadas")
-  public void dadaUnaCargaDeHorasConTarea(String cargaDeHorasId, String tareaId, String recursoId, double cantidadHoras) {
+  @Y(
+      "una carga de horas con id {string}, con tarea con id {string}, cargada por el recurso con id {string} con {double} horas cargadas")
+  public void dadaUnaCargaDeHorasConTarea(
+      String cargaDeHorasId, String tareaId, String recursoId, double cantidadHoras) {
     TareaDTO tarea = mock(TareaDTO.class);
 
     when(tarea.getId()).thenReturn(tareaId);
@@ -82,11 +83,9 @@ public class ConsultaDeCostoRecursoSteps {
 
   @Cuando("consulto el costo del recurso")
   public void consultarCostoRecurso() {
-    costoRecurso = 
-      resultadoOperacionCommonSteps.ejecutar(
-        () -> 
-              recursoService.obtenerCostoPorRecurso(
-                recursoCommonSteps.getRecurso().getId()));
+    costoRecurso =
+        resultadoOperacionCommonSteps.ejecutar(
+            () -> recursoService.obtenerCostoPorRecurso(recursoCommonSteps.getRecurso().getId()));
   }
 
   @Y("el costo del recurso debe ser {int}")

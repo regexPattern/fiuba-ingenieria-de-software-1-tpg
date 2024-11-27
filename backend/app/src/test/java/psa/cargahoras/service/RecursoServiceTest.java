@@ -1,31 +1,31 @@
 package psa.cargahoras.service;
 
-import org.junit.Test;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
+import psa.cargahoras.dto.CargaDeHorasPorRecursoDTO;
+import psa.cargahoras.dto.CostoRecursoDTO;
 import psa.cargahoras.dto.RecursoDTO;
 import psa.cargahoras.dto.RolDTO;
-import psa.cargahoras.dto.CostoRecursoDTO;
 import psa.cargahoras.entity.CargaDeHoras;
 import psa.cargahoras.repository.CargaDeHorasRepository;
-import psa.cargahoras.dto.CargaDeHorasPorRecursoDTO;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RecursoServiceTest {
 
   @Mock private ApiExternaService apiExternaService;
+
   @Mock private CargaDeHorasService mockCargaDeHorasService;
+
   @Mock private CargaDeHorasRepository cargaDeHorasRepository;
 
   @InjectMocks private RecursoService recursoService;
@@ -35,7 +35,7 @@ public class RecursoServiceTest {
     String rolId1 = UUID.randomUUID().toString();
     String recursoId1 = UUID.randomUUID().toString();
     String cargaDeHorasId1 = UUID.randomUUID().toString();
-    
+
     RolDTO rol1 = new RolDTO();
     rol1.setId(rolId1);
     rol1.setNombre("Desarrollador");
@@ -52,12 +52,15 @@ public class RecursoServiceTest {
     when(apiExternaService.getRecursos()).thenReturn(Arrays.asList(recurso1));
     when(cargaDeHorasRepository.findAll()).thenReturn(Arrays.asList(cargaDeHoras1));
 
-    CargaDeHorasService cargaDeHorasService = new CargaDeHorasService(cargaDeHorasRepository, apiExternaService);
-    
-    List<CargaDeHorasPorRecursoDTO> cargaPorRecurso1 = cargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId1);
+    CargaDeHorasService cargaDeHorasService =
+        new CargaDeHorasService(cargaDeHorasRepository, apiExternaService);
+
+    List<CargaDeHorasPorRecursoDTO> cargaPorRecurso1 =
+        cargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId1, LocalDate.now());
 
     when(apiExternaService.getRoles()).thenReturn(Arrays.asList(rol1));
-    when(mockCargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId1)).thenReturn(cargaPorRecurso1);
+    when(mockCargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId1, LocalDate.now()))
+        .thenReturn(cargaPorRecurso1);
 
     CostoRecursoDTO costoRecurso1 = recursoService.obtenerCostoPorRecurso(recursoId1);
 
@@ -103,14 +106,19 @@ public class RecursoServiceTest {
     when(apiExternaService.getRecursos()).thenReturn(Arrays.asList(recurso1, recurso2));
     when(cargaDeHorasRepository.findAll()).thenReturn(Arrays.asList(cargaDeHoras1, cargaDeHoras2));
 
-    CargaDeHorasService cargaDeHorasService = new CargaDeHorasService(cargaDeHorasRepository, apiExternaService);
-    
-    List<CargaDeHorasPorRecursoDTO> cargaPorRecurso1 = cargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId1);
-    List<CargaDeHorasPorRecursoDTO> cargaPorRecurso2 = cargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId2);
+    CargaDeHorasService cargaDeHorasService =
+        new CargaDeHorasService(cargaDeHorasRepository, apiExternaService);
+
+    List<CargaDeHorasPorRecursoDTO> cargaPorRecurso1 =
+        cargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId1, LocalDate.now());
+    List<CargaDeHorasPorRecursoDTO> cargaPorRecurso2 =
+        cargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId2, LocalDate.now());
 
     when(apiExternaService.getRoles()).thenReturn(Arrays.asList(rol1, rol2));
-    when(mockCargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId1)).thenReturn(cargaPorRecurso1);
-    when(mockCargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId2)).thenReturn(cargaPorRecurso2);
+    when(mockCargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId1, LocalDate.now()))
+        .thenReturn(cargaPorRecurso1);
+    when(mockCargaDeHorasService.obtenerCargasDeHorasPorRecurso(recursoId2, LocalDate.now()))
+        .thenReturn(cargaPorRecurso2);
 
     List<CostoRecursoDTO> costosPorRecurso = recursoService.obtenerCostosDeTodosLosRecursos();
 
@@ -130,10 +138,10 @@ public class RecursoServiceTest {
     when(apiExternaService.getRecursos()).thenReturn(Arrays.asList());
 
     Exception e =
-      assertThrows(IllegalArgumentException.class, 
-          () ->recursoService.obtenerCostoPorRecurso(recursoInexistenteId));
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> recursoService.obtenerCostoPorRecurso(recursoInexistenteId));
 
     assertEquals("No existe el recurso con ID: " + recursoInexistenteId, e.getMessage());
-
   }
 }

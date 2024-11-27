@@ -12,8 +12,7 @@ public class RecursoCommonSteps {
 
   private RecursoDTO recurso;
 
-  public RecursoCommonSteps(TestContext testContext 
-                            /*ROLCommonSteps rolCommonSteps*/) {
+  public RecursoCommonSteps(TestContext testContext /*ROLCommonSteps rolCommonSteps*/) {
     // this.rolCommonSteps = rolCommonSteps;
     this.testContext = testContext;
   }

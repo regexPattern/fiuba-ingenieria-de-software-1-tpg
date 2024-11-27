@@ -9,12 +9,7 @@ public class CostoRecursoDTO {
   private String nombreRol;
 
   public CostoRecursoDTO(
-    String id,
-    String rolId,
-    int costo,
-    String nombreRecurso,
-    String nombreRol
-  ) {
+      String id, String rolId, int costo, String nombreRecurso, String nombreRol) {
     this.id = id;
     this.rolId = rolId;
     this.costo = costo;
