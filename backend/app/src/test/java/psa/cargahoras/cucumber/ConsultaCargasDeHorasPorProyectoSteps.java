@@ -21,6 +21,7 @@ public class ConsultaCargasDeHorasPorProyectoSteps {
 
   private final TestContext testContext;
   private final TareaCommonSteps tareaCommonSteps;
+  private final ProyectoCommonSteps proyectoCommonSteps;
   private final ResultadoOperacionCommonSteps resultadoOperacionCommonSteps;
 
   @Mock private CargaDeHorasRepository cargaDeHorasRepository;
@@ -34,9 +35,11 @@ public class ConsultaCargasDeHorasPorProyectoSteps {
   public ConsultaCargasDeHorasPorProyectoSteps(
       TestContext testContext,
       TareaCommonSteps tareaCommonSteps,
+      ProyectoCommonSteps proyectoCommonSteps,
       ResultadoOperacionCommonSteps resultadoOperacionCommonSteps) {
     this.testContext = testContext;
     this.tareaCommonSteps = tareaCommonSteps;
+    this.proyectoCommonSteps = proyectoCommonSteps;
     this.resultadoOperacionCommonSteps = resultadoOperacionCommonSteps;
   }
 
@@ -49,15 +52,15 @@ public class ConsultaCargasDeHorasPorProyectoSteps {
         new CargaDeHorasService(cargaDeHorasRepository, testContext.getApiExternaService());
   }
 
-  @Dado("un proyecto con id {string}")
-  @Dado("un proyecto sin tareas con id {string}")
-  public void dadoUnProyecto(String proyectoId) {
-    proyecto = mock(ProyectoDTO.class);
+  // @Dado("un proyecto con id {string}")
+  // @Dado("un proyecto sin tareas con id {string}")
+  // public void dadoUnProyecto(String proyectoId) {
+  //   proyecto = mock(ProyectoDTO.class);
 
-    when(proyecto.getId()).thenReturn(proyectoId);
+  //   when(proyecto.getId()).thenReturn(proyectoId);
 
-    when(testContext.getApiExternaService().getProyectos()).thenReturn(Arrays.asList(proyecto));
-  }
+  //   when(testContext.getApiExternaService().getProyectos()).thenReturn(Arrays.asList(proyecto));
+  // }
 
   @Y("una carga de horas con id {string}, con tarea con id {string}")
   public void dadaUnaCargaDeHorasConTarea(String cargaDeHorasId, String tareaId) {
@@ -74,7 +77,8 @@ public class ConsultaCargasDeHorasPorProyectoSteps {
   public void consultarCargasDeHorasDelProyecto() {
     cargasDeHorasFinales =
         resultadoOperacionCommonSteps.ejecutar(
-            () -> cargaDeHorasService.obtenerCargasDeHorasPorProyecto(proyecto.getId()));
+            () -> cargaDeHorasService.obtenerCargasDeHorasPorProyecto(
+              proyectoCommonSteps.getProyecto().getId()));
   }
 
   @Y("la cantidad de cargas de horas del proyecto debe ser {int}")
@@ -90,12 +94,12 @@ public class ConsultaCargasDeHorasPorProyectoSteps {
     assertEquals(true, existeCarga);
   }
 
-  @Dado("un proyecto con id inexistente {string}")
-  public void dadoUnProyectoConIdInexistente(String proyectoId) {
-    proyecto = mock(ProyectoDTO.class);
+  // @Dado("un proyecto con id inexistente {string}")
+  // public void dadoUnProyectoConIdInexistente(String proyectoId) {
+  //   proyecto = mock(ProyectoDTO.class);
 
-    when(proyecto.getId()).thenReturn(proyectoId);
+  //   when(proyecto.getId()).thenReturn(proyectoId);
 
-    when(testContext.getApiExternaService().getProyectos()).thenReturn(Arrays.asList());
-  }
+  //   when(testContext.getApiExternaService().getProyectos()).thenReturn(Arrays.asList());
+  // }
 }
