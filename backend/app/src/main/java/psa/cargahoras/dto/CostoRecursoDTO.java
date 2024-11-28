@@ -1,20 +1,73 @@
 package psa.cargahoras.dto;
 
+import java.time.YearMonth;
+
 public class CostoRecursoDTO {
 
   private String id;
   private String rolId;
-  private int costo;
+  private double costo;
   private String nombreRecurso;
   private String nombreRol;
+  private double horasTrabajadas;
+  private double costoRol;
+  private YearMonth mes;
 
   public CostoRecursoDTO(
-      String id, String rolId, int costo, String nombreRecurso, String nombreRol) {
+      String id, String rolId, double costo, String nombreRecurso, String nombreRol) {
     this.id = id;
     this.rolId = rolId;
     this.costo = costo;
     this.nombreRecurso = nombreRecurso;
     this.nombreRol = nombreRol;
+  }
+
+  public CostoRecursoDTO(
+      String id,
+      String rolId,
+      double costo,
+      String nombreRecurso,
+      String nombreRol,
+      double horasTrabajadas,
+      double costoRol) {
+    this.id = id;
+    this.rolId = rolId;
+    this.costo = costo;
+    this.nombreRecurso = nombreRecurso;
+    this.nombreRol = nombreRol;
+    this.horasTrabajadas = horasTrabajadas;
+    this.costoRol = costoRol;
+  }
+
+  public CostoRecursoDTO(
+      String id,
+      String rolId,
+      double costo,
+      String nombreRecurso,
+      String nombreRol,
+      double horasTrabajadas,
+      double costoRol,
+      YearMonth mes) {
+    this.id = id;
+    this.rolId = rolId;
+    this.costo = costo;
+    this.nombreRecurso = nombreRecurso;
+    this.nombreRol = nombreRol;
+    this.horasTrabajadas = horasTrabajadas;
+    this.costoRol = costoRol;
+    this.mes = mes;
+  }
+
+  public YearMonth getMes() {
+    return mes;
+  }
+
+  public double getHorasTrabajadas() {
+    return horasTrabajadas;
+  }
+
+  public double getCostoRol() {
+    return costoRol;
   }
 
   public String getId() {
@@ -33,7 +86,7 @@ public class CostoRecursoDTO {
     this.rolId = rolId;
   }
 
-  public int getCosto() {
+  public double getCosto() {
     return costo;
   }
 
