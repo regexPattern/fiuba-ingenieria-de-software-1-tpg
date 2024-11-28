@@ -6,3 +6,4 @@
 | --- | --- |
 | Carlos Castillo | 108535 |
 | Daniel Mamani | 109932 |
+| Claudio Gimenez | 105509 |
