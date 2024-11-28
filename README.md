@@ -5,3 +5,4 @@
 | Nombre | Padrón |
 | --- | --- |
 | Carlos Castillo | 108535 |
+| Daniel Mamani | 109932 |
