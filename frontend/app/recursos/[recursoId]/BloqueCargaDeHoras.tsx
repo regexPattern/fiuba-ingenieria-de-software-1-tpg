@@ -1,25 +1,29 @@
 "use client";
 
-import { CargaDeHoras } from "@/_lib/tipos";
 import IconoEliminar from "./iconoEliminar";
 import IconoModificar from "./iconoModificar";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { eliminarCargaHoras } from "./action";
+import { obtenerColoresDeProyecto } from "./coloresProyectos";
 
 export default function BloqueCargaDeHoras({
   id,
   tareaNombre,
-  cantidadHoras
+  cantidadHoras,
+  proyectoId
 }: {
   id: string;
   tareaNombre: string;
   cantidadHoras: number;
+  proyectoId: string;
 }) {
   const router = useRouter();
 
   const alturaRem = 6.0 + Math.min(cantidadHoras - 1, 23) * 0.75;
+
+  const coloresBloque = obtenerColoresDeProyecto(proyectoId);
 
   async function handleEliminarCarga() {
     const confirmar = confirm(
@@ -45,8 +49,8 @@ export default function BloqueCargaDeHoras({
 
   return (
     <div
-      style={{ height: `${alturaRem}rem` }}
-      className="border border-emerald-500 bg-emerald-200 p-2 overflow-y-auto overflow-x-hidden flex flex-col"
+      style={{ height: `${alturaRem}rem`, ...coloresBloque }}
+      className="border p-2 overflow-y-auto overflow-x-hidden flex flex-col"
     >
       <span className="font-semibold underline">
         {cantidadHoras} hora{cantidadHoras > 1 && "s"}

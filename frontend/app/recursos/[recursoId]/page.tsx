@@ -1,6 +1,7 @@
 import { desencodearFecha } from "@/_lib/fecha";
-import { CargaDeHoras } from "@/_lib/tipos";
+import { CargaDeHoras, Proyecto } from "@/_lib/tipos";
 import BloqueCargaDeHoras from "./BloqueCargaDeHoras";
+import { obtenerColoresDeProyecto } from "./coloresProyectos";
 
 const INDICES_DIAS = {
   Domingo: 0,
@@ -37,44 +38,60 @@ export default async function ({
     console.error(e);
   }
 
+  const proyectosRes = await fetch(`${process.env.BACKEND_URL}/proyectos`);
+  const proyectos: Proyecto[] = await proyectosRes.json();
+
   const cargasPorDia = cargas.map((c) => {
     const fechaCarga = desencodearFecha(c.fechaCarga);
     return { ...c, fechaCarga };
   });
 
   return (
-    <table className="border border-gray-300 w-full">
-      <thead className="bg-gray-50 border-b border-gray-300">
-        <tr className="grid grid-cols-7">
-          {Object.keys(INDICES_DIAS).map((d) => (
-            <td key={d} className="p-2 text-center">
-              {d}
-            </td>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {cargasPorDia.length > 0 ? (
-          <tr className="grid grid-cols-7 gap-1 p-1.5">
-            {Object.values(INDICES_DIAS).map((i) => (
-              <td key={i}>
-                <ColumnaCargasDeHoraPorDia
-                  cargasDeHoras={cargasPorDia.filter(
-                    (c) => c.fechaCarga.getDay() === i
-                  )}
-                />
+    <div className="space-y-6">
+      <ul>
+        {proyectos.map((p) => (
+          <li key={p.id} className="flex items-center gap-2">
+            <span
+              className="inline-block w-4 h-4 border rounded-lg"
+              style={{ ...obtenerColoresDeProyecto(p.id) }}
+            ></span>
+            <span>{p.nombre}</span>
+          </li>
+        ))}
+      </ul>
+      <table className="border border-gray-300 w-full">
+        <thead className="bg-gray-50 border-b border-gray-300">
+          <tr className="grid grid-cols-7">
+            {Object.keys(INDICES_DIAS).map((d) => (
+              <td key={d} className="p-2 text-center">
+                {d}
               </td>
             ))}
           </tr>
-        ) : (
-          <tr>
-            <td className="text-center p-4">
-              El recurso no tiene cargas de horas en esta semana.
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {cargasPorDia.length > 0 ? (
+            <tr className="grid grid-cols-7 gap-1 p-1.5">
+              {Object.values(INDICES_DIAS).map((i) => (
+                <td key={i}>
+                  <ColumnaCargasDeHoraPorDia
+                    cargasDeHoras={cargasPorDia.filter(
+                      (c) => c.fechaCarga.getDay() === i
+                    )}
+                  />
+                </td>
+              ))}
+            </tr>
+          ) : (
+            <tr>
+              <td className="text-center p-4">
+                El recurso no tiene cargas de horas en esta semana.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

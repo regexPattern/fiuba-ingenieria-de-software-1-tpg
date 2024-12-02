@@ -32,6 +32,7 @@ export type CargaDeHoras = {
   cantidadHoras: number;
   fechaCarga: string;
   nombreProyecto: string;
+  proyectoId: string;
 };
 
 export type CargasDeHorasPorRecurso = {

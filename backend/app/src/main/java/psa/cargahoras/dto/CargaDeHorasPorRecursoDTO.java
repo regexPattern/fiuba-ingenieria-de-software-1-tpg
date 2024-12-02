@@ -11,6 +11,7 @@ public class CargaDeHorasPorRecursoDTO {
   private double cantidadHoras;
   private String fechaCarga;
   private String nombreProyecto;
+  private String proyectoId;
 
   public CargaDeHorasPorRecursoDTO(
       String id,
@@ -18,13 +19,23 @@ public class CargaDeHorasPorRecursoDTO {
       String tareaNombre,
       double cantidadHoras,
       LocalDate fechaCarga,
-      String nombreProyecto) {
+      String nombreProyecto,
+      String proyectoId) {
     this.id = id;
     this.tareaId = tareaId;
     this.tareaNombre = tareaNombre;
     this.cantidadHoras = cantidadHoras;
     this.fechaCarga = fechaCarga.format(CargaDeHoras.formatterFecha);
     this.nombreProyecto = nombreProyecto;
+    this.proyectoId = proyectoId;
+  }
+
+  public String getProyectoId() {
+    return proyectoId;
+  }
+
+  public void setProyectoId(String proyectoId) {
+    this.proyectoId = proyectoId;
   }
 
   public String getId() {

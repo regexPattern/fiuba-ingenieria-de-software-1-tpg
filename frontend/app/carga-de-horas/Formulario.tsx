@@ -166,7 +166,7 @@ export default function Formulario({
                 >
                   {proyectos.map((p) => (
                     <option key={p.id} value={p.id}>
-                      {p.id} - {p.nombre}
+                      {p.nombre}
                     </option>
                   ))}
                 </Select>
@@ -197,7 +197,7 @@ export default function Formulario({
                     .filter((t) => t.proyectoId === proyectoId)
                     .map((t) => (
                       <option key={t.id} value={t.id}>
-                        {t.id} - {t.nombre}
+                        {t.nombre}
                       </option>
                     ))}
                 </Select>

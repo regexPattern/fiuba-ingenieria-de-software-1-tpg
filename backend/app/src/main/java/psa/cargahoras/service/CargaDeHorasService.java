@@ -152,7 +152,8 @@ public class CargaDeHorasService {
                   tareaNombre,
                   carga.getCantidadHoras(),
                   carga.getFechaCarga(),
-                  nombreProyecto);
+                  nombreProyecto,
+                  proyectoId);
             })
         .collect(Collectors.toList());
   }
