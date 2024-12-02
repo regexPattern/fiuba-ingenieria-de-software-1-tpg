@@ -1,5 +1,10 @@
 "use client";
 
+import { CargaDeHoras } from "@/_lib/tipos";
+import IconoEliminar from "./iconoEliminar";
+import IconoModificar from "./iconoModificar";
+
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { eliminarCargaHoras } from "./action";
 
@@ -11,6 +16,7 @@ export default function BloqueCargaDeHoras({
   id: string;
   tareaNombre: string;
   cantidadHoras: number;
+  carga: Partial<CargaDeHoras>;
 }) {
   const router = useRouter();
 
@@ -23,7 +29,6 @@ export default function BloqueCargaDeHoras({
     if (!confirmar) return;
 
     try {
-      // Llama a la server action para eliminar la carga de horas
       const resultado = await eliminarCargaHoras(id);
 
       if (resultado.exito) {
@@ -41,19 +46,19 @@ export default function BloqueCargaDeHoras({
 
   return (
     <div
-      className="border border-emerald-500 bg-emerald-200 p-2 overflow-y-auto overflow-x-hidden flex flex-col"
       style={{ height: `${alturaRem}rem` }}
+      className="border border-emerald-500 bg-emerald-200 p-2 overflow-y-auto overflow-x-hidden flex flex-col"
     >
       <span className="font-semibold underline">
         {cantidadHoras} hora{cantidadHoras > 1 && "s"}
       </span>
       <span className="text-sm">{tareaNombre}</span>
-      <button
-        onClick={handleEliminarCarga}
-        className="text-red-600 font-bold mt-2 hover:underline"
-      >
-        Eliminar
-      </button>
+      <div className="flex justify-space-around mx-auto">
+        <Link href={`/carga-de-horas/${id}`}>
+          <IconoModificar></IconoModificar>
+        </Link>
+        <IconoEliminar onEliminar={() => handleEliminarCarga()}></IconoEliminar>
+      </div>
     </div>
   );
 }

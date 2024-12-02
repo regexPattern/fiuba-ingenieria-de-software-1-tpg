@@ -54,7 +54,9 @@ public class CargaDeHorasService {
                       carga.getId(),
                       tareaNombre,
                       carga.getCantidadHoras(),
-                      carga.getFechaCarga().format(CargaDeHoras.formatterFecha)));
+                      carga.getFechaCarga().format(CargaDeHoras.formatterFecha),
+                      tarea.getId(),
+                      carga.getRecursoId()));
             })
         .collect(
             Collectors.groupingBy(
@@ -195,14 +197,20 @@ public class CargaDeHorasService {
   }
 
   public void modificarCargaDeHoras(CargaDeHoras cargaModificada) {
-    CargaDeHoras cargaVieja =
+    CargaDeHoras cargaExistente =
         cargaHorasRepository
             .findById(cargaModificada.getId())
             .orElseThrow(
                 () ->
-                    new IllegalArgumentException("No existe la carga de horas con ID: " + cargaModificada.getId()));
-  
-    cargaHorasRepository.delete(cargaVieja);
-    cargaHorasRepository.save(cargaModificada);
+                    new IllegalArgumentException(
+                        "No existe la carga de horas con ID: " + cargaModificada.getId()));
+
+    System.out.println(cargaModificada.getFechaCarga().toString());
+
+    cargaExistente.setCantidadHoras(cargaModificada.getCantidadHoras());
+    cargaExistente.setFechaCarga(
+        CargaDeHoras.formatterFecha.format(cargaModificada.getFechaCarga()));
+
+    cargaHorasRepository.save(cargaExistente);
   }
 }

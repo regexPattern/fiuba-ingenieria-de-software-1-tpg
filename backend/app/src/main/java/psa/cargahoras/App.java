@@ -87,13 +87,15 @@ public class App {
     }
   }
 
-  @PutMapping("/carga-de-horas")
-  public ResponseEntity<?> modificarCargaDeHoras(@RequestBody Map<String, Object> request) {
+  @PutMapping("/carga-de-horas/{cargaDeHorasId}")
+  public ResponseEntity<?> modificarCargaDeHoras(
+      @PathVariable String cargaDeHorasId, @RequestBody Map<String, Object> request) {
     try {
       CargaDeHoras cargaActualizada = extraerCargaDeHoras(request);
+      cargaActualizada.setId(cargaDeHorasId);
       cargaDeHorasService.modificarCargaDeHoras(cargaActualizada);
       return new ResponseEntity<>(cargaActualizada, HttpStatus.OK);
-    } catch(IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     } catch (Exception e) {
       return new ResponseEntity<>(

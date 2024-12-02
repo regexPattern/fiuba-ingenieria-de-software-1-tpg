@@ -69,15 +69,35 @@ public class CargaDeHoras {
     return tareaId;
   }
 
+  public void setTareaId(String tareaId) {
+    this.tareaId = tareaId;
+  }
+
   public String getRecursoId() {
     return recursoId;
+  }
+
+  public void setRecursoId(String recursoId) {
+    this.recursoId = recursoId;
   }
 
   public double getCantidadHoras() {
     return cantidadHoras;
   }
 
+  public void setCantidadHoras(double cantidadHoras) {
+    this.cantidadHoras = cantidadHoras;
+  }
+
   public LocalDate getFechaCarga() {
     return fechaCarga;
+  }
+
+  public void setFechaCarga(String fechaCargaStr) {
+    try {
+      this.fechaCarga = LocalDate.parse(fechaCargaStr, formatterFecha);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("El formato de la fecha debe ser dd/MM/yyyy", e);
+    }
   }
 }
