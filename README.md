@@ -13,3 +13,7 @@
 # Pagina del sistema
 
 La página web del sistema se encuentra en el siguiente link: https://psa-carga-horas-frontend.fly.dev/
+
+# Pagina de prototipos
+
+El prototipo se encuentara en el siguiente link: https://balsamiq.cloud/sza5e24/pmyjpec
