@@ -16,7 +16,6 @@ export default function BloqueCargaDeHoras({
   id: string;
   tareaNombre: string;
   cantidadHoras: number;
-  carga: Partial<CargaDeHoras>;
 }) {
   const router = useRouter();
 
