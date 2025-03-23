@@ -16,6 +16,6 @@ Sistema de carga de horas de trabajo para la empresa ficticia PSA. El objetivo d
 
 ## Capturas
 
-![fiuba-ingenieria-de-software-1-tpg-1](https://github.com/user-attachments/assets/76fa2cc4-b4e8-4426-bea8-1d3b52a7c689)
-![fiuba-ingenieria-de-software-1-tpg-2](https://github.com/user-attachments/assets/66f05bd0-bdc7-4804-8304-ae30ca89967c)
-![fiuba-ingenieria-de-software-1-tpg-3](https://github.com/user-attachments/assets/5aa592e3-dfb1-48b3-b29d-d9ad6018c073)
+![fiuba-ingenieria-de-software-tpg-1](https://github.com/user-attachments/assets/8b815126-5cbd-4831-80f2-ed11e10c773c)
+![fiuba-ingenieria-de-software-tpg-1_1](https://github.com/user-attachments/assets/db275561-1702-4307-985f-7619be4a0745)
+![fiuba-ingenieria-de-software-tpg-1_2](https://github.com/user-attachments/assets/1ba0d3e7-7464-4059-87fb-89896b6ce86e)
